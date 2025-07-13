@@ -1,9 +1,9 @@
 import React, { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { login } from "../services/authService"
 import toast from "react-hot-toast"
 import axios from "axios"
-import { useAuth } from "../context/useAuth"
+import { useAuth } from "../context/UseAuth"
 
 interface FormData {
     email: string
@@ -22,7 +22,7 @@ const Login = () => {
     })
     const [errors, setErrors] = useState<FormErrors>({})
     const [isLoading, setIsLoading] = useState(false)
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const { login: authenticate } = useAuth()
 
     const validateForm = (): boolean => {
@@ -46,6 +46,27 @@ const Login = () => {
         return Object.keys(newErrors).length === 0
     }
 
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault()
+    //     if (validateForm()) {
+    //         setIsLoading(true)
+    //         try {
+    //             const user = await login(formData)
+    //             toast.success(`Welcome, ${user.name}!`)
+    //             authenticate(user.accessToken)
+    //             navigate("/dashboard") // <-- or wherever you want to go after login
+    //         } catch (error) {
+    //             if (axios.isAxiosError(error)) {
+    //                 toast.error(error.message)
+    //             } else {
+    //                 toast.error("Something went wrong")
+    //             }
+    //         } finally {
+    //             setIsLoading(false)
+    //         }
+    //     }
+    // }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (validateForm()) {
@@ -53,8 +74,7 @@ const Login = () => {
             try {
                 const user = await login(formData)
                 toast.success(`Welcome, ${user.name}!`)
-                authenticate(user.accessToken)
-                navigate("/dashboard") // <-- or wherever you want to go after login
+                authenticate(user.accessToken) // ✅ Let AuthProvider handle navigation
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     toast.error(error.message)
@@ -66,6 +86,7 @@ const Login = () => {
             }
         }
     }
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target

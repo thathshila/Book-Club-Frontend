@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../components/NavBar"
-import { useAuth } from "../context/useAuth"
+import { useAuth } from "../context/UseAuth"
 
 const Layout = () => {
     const { isAuthenticating } = useAuth()

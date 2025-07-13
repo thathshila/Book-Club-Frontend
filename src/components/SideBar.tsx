@@ -25,13 +25,13 @@ const Sidebar: React.FC = () => {
             icon: <MdDashboard className='w-5 h-5' />,
         },
         {
-            id: "courses",
-            label: "Courses",
+            id: "readers",
+            label: "Readers",
             icon: <MdPeople className='w-5 h-5' />,
         },
         {
-            id: "enrollments",
-            label: "Enrollments",
+            id: "manage book",
+            label: "Books",
             icon: <MdInventory className='w-5 h-5' />,
         },
         {

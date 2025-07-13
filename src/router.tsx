@@ -4,6 +4,9 @@ import Login from "./pages/LoginPage"
 import Signup from "./pages/SignUpPage"
 import Dashboard from "./pages/DashboardPage"
 import AdminRoutes from "./pages/AdminRoutes"
+import LibrarianDashboard from "./pages/LibrarianDashboard.tsx";
+import ReaderDashboard from "./pages/ReaderDashboard.tsx";
+import AdminDashboard from "./pages/AdminDashboard.tsx";
 
 
 const router = createBrowserRouter([
@@ -18,7 +21,9 @@ const router = createBrowserRouter([
                 element: <AdminRoutes />,
                 children: [
                     { path: "/dashboard", element: <Dashboard /> },
-
+                    { path: "/librarianDashboard", element: <LibrarianDashboard/>},
+                    { path: "/readerDashboard", element: <ReaderDashboard/>},
+                    { path: "/adminDashboard", element: <AdminDashboard/>}
                 ],
             },
         ],
