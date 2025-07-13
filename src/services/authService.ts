@@ -28,7 +28,6 @@ export interface LogoutResponse {
     message: string
 }
 
-// ✅ FormData includes profileImage (file), so set proper headers
 export const signUp = async (formData: FormData): Promise<SignUpResponse> => {
     const response = await apiClient.post("/auth/signup", formData, {
         headers: {
@@ -38,7 +37,7 @@ export const signUp = async (formData: FormData): Promise<SignUpResponse> => {
     return response.data
 }
 
-// ✅ login uses only email and password
+
 export const login = async (
     loginData: Pick<User, "email" | "password">
 ): Promise<LoginResponse> => {

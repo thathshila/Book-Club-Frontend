@@ -22,7 +22,6 @@ const Login = () => {
     })
     const [errors, setErrors] = useState<FormErrors>({})
     const [isLoading, setIsLoading] = useState(false)
-    // const navigate = useNavigate()
     const { login: authenticate } = useAuth()
 
     const validateForm = (): boolean => {
@@ -35,7 +34,6 @@ const Login = () => {
             newErrors.email = "Please enter a valid email address"
         }
 
-        // Password validation
         if (!formData.password) {
             newErrors.password = "Password is required"
         } else if (formData.password.length < 6) {
@@ -45,27 +43,6 @@ const Login = () => {
         setErrors(newErrors)
         return Object.keys(newErrors).length === 0
     }
-
-    // const handleSubmit = async (e: React.FormEvent) => {
-    //     e.preventDefault()
-    //     if (validateForm()) {
-    //         setIsLoading(true)
-    //         try {
-    //             const user = await login(formData)
-    //             toast.success(`Welcome, ${user.name}!`)
-    //             authenticate(user.accessToken)
-    //             navigate("/dashboard") // <-- or wherever you want to go after login
-    //         } catch (error) {
-    //             if (axios.isAxiosError(error)) {
-    //                 toast.error(error.message)
-    //             } else {
-    //                 toast.error("Something went wrong")
-    //             }
-    //         } finally {
-    //             setIsLoading(false)
-    //         }
-    //     }
-    // }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -94,7 +71,7 @@ const Login = () => {
             ...prev,
             [name]: value,
         }))
-        // Clear error when user starts typing
+
         if (errors[name as keyof FormErrors]) {
             setErrors((prev) => ({
                 ...prev,

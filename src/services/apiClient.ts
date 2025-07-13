@@ -7,10 +7,9 @@ const apiClient = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
-    withCredentials: true, // cookies -> refresh token
+    withCredentials: true,
 })
 
-/// Authorization: "Bearer asdkjasldkja"
 export const setHeader = (accessToken: string) => {
     if (accessToken !== "") {
         apiClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`
