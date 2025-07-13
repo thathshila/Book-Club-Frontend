@@ -9,4 +9,5 @@ export interface Book {
     copiesAvailable: number
     profileImage?: string
     createdAt?: string
+    isDelete: boolean;
 }
