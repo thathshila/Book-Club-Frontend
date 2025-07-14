@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         if (decoded.role === "reader") {
             router.navigate("/readerDashboard");
-        } else if (decoded.role === "admin") {
+        } else if (decoded.role === "staff") {
             router.navigate("/adminDashboard");
         } else if (decoded.role === "librarian") {
             router.navigate("/librarianDashboard");
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
                     if (decoded.role === "reader") {
                         router.navigate("/readerDashboard");
-                    } else if (decoded.role === "admin") {
+                    } else if (decoded.role === "staff") {
                         router.navigate("/adminDashboard");
                     } else if (decoded.role === "librarian") {
                         router.navigate("/librarianDashboard");
