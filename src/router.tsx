@@ -6,7 +6,8 @@ import AdminRoutes from "./pages/AdminRoutes"
 import MainDashboard from "./pages/MainDashboard.tsx";
 import LendingList from "./pages/LendingList.tsx";
 import LendBookForm from "./pages/LendingForm.tsx";
-import AddBook from "./pages/AddBook.tsx";
+// import AddBook from "./pages/AddBook.tsx";
+import ManageBookPage from "./pages/ManageBookPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -20,7 +21,8 @@ const router = createBrowserRouter([
                 element: <AdminRoutes />,
                 children: [
                     { path: "/dashboard", element: <MainDashboard /> },
-                    { path: "/dashboard/add-book", element: <AddBook onBookAdded={() => {}}/>},
+                    // { path: "/dashboard/add-book", element: <AddBook onBookAdded={() => {}}/>},
+                    { path: "/dashboard/manage-books", element: <ManageBookPage />},
                     { path: "/lendings", element:<LendingList/>},
                     { path: "/lend-book", element:<LendBookForm/>},
                 ],

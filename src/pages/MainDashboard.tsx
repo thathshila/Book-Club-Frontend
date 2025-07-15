@@ -53,10 +53,15 @@ const MainDashboard: React.FC = () => {
                 <div className='bg-white rounded-lg shadow p-6'>
                     <h3 className='text-lg font-semibold text-gray-900 mb-4'>Quick Actions</h3>
                     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-                        <button  onClick={() => navigate("/dashboard/add-book")}
-                            className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
-                            <MdMenuBook className='w-8 h-8 text-indigo-600 mx-auto mb-2' />
-                            <p className='text-sm font-medium text-gray-900'>Add Book</p>
+                        {/*<button  onClick={() => navigate("/dashboard/add-book")}*/}
+                        {/*    className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>*/}
+                        {/*    <MdMenuBook className='w-8 h-8 text-indigo-600 mx-auto mb-2' />*/}
+                        {/*    <p className='text-sm font-medium text-gray-900'>Add Book</p>*/}
+                        {/*</button>*/}
+                        <button onClick={() => navigate("/dashboard/manage-books")}
+                                className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150">
+                            <MdMenuBook className="w-8 h-8 text-indigo-600 mx-auto mb-2" />
+                            <p className="text-sm font-medium text-gray-900">Manage Books</p>
                         </button>
                         <button className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
                             <MdPerson className='w-8 h-8 text-green-600 mx-auto mb-2' />
