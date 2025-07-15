@@ -15,6 +15,7 @@ const Sidebar: React.FC = () => {
     const handleItemClick = (itemId: string) => {
         setActiveItem(itemId)
         if (itemId === "dashboard") navigate(`/dashboard`)
+        if (itemId === "lendings") navigate(`/lendings`)
         else navigate(`/dashboard/${itemId}`)
     }
 
@@ -26,17 +27,37 @@ const Sidebar: React.FC = () => {
         },
         {
             id: "readers",
-            label: "Readers",
+            label: "Manage Readers",
             icon: <MdPeople className='w-5 h-5' />,
         },
         {
-            id: "manage book",
-            label: "Books",
+            id: "books",
+            label: "Manage Books",
             icon: <MdInventory className='w-5 h-5' />,
         },
         {
-            id: "payments",
-            label: "Payments",
+            id: "staff",
+            label: "Manage Staff",
+            icon: <MdShoppingCart className='w-5 h-5' />,
+        },
+        {
+            id: "lendings",
+            label: "Manage Lendings",
+            icon: <MdShoppingCart className='w-5 h-5' />,
+        },
+        {
+            id: "overdue",
+            label: "Manage Overdue",
+            icon: <MdShoppingCart className='w-5 h-5' />,
+        },
+        {
+            id: "notification",
+            label: "Manage Notification",
+            icon: <MdShoppingCart className='w-5 h-5' />,
+        },
+        {
+            id: "system setting",
+            label: "System Setting",
             icon: <MdShoppingCart className='w-5 h-5' />,
         },
     ]
@@ -44,7 +65,7 @@ const Sidebar: React.FC = () => {
     return (
         <div className='bg-gray-900 text-white w-64 min-h-screen p-4'>
             <div className='mb-8'>
-                <h1 className='text-2xl font-bold text-center py-4'>Admin Panel</h1>
+                <h1 className='text-2xl font-bold text-center py-4'>TURN THE PAGE</h1>
             </div>
 
             <nav>

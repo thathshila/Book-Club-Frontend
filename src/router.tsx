@@ -2,12 +2,11 @@ import { createBrowserRouter } from "react-router-dom"
 import Layout from "./pages/Layout"
 import Login from "./pages/LoginPage"
 import Signup from "./pages/SignUpPage"
-import Dashboard from "./pages/DashboardPage"
 import AdminRoutes from "./pages/AdminRoutes"
-import LibrarianDashboard from "./pages/LibrarianDashboard.tsx";
-import ReaderDashboard from "./pages/ReaderDashboard.tsx";
-import AdminDashboard from "./pages/AdminDashboard.tsx";
-
+import MainDashboard from "./pages/MainDashboard.tsx";
+import LendingList from "./pages/LendingList.tsx";
+import LendBookForm from "./pages/LendingForm.tsx";
+import AddBook from "./pages/AddBook.tsx";
 
 const router = createBrowserRouter([
     {
@@ -20,10 +19,10 @@ const router = createBrowserRouter([
             {
                 element: <AdminRoutes />,
                 children: [
-                    { path: "/dashboard", element: <Dashboard /> },
-                    { path: "/librarianDashboard", element: <LibrarianDashboard/>},
-                    { path: "/readerDashboard", element: <ReaderDashboard/>},
-                    { path: "/adminDashboard", element: <AdminDashboard/>}
+                    { path: "/dashboard", element: <MainDashboard /> },
+                    { path: "/dashboard/add-book", element: <AddBook onBookAdded={() => {}}/>},
+                    { path: "/lendings", element:<LendingList/>},
+                    { path: "/lend-book", element:<LendBookForm/>},
                 ],
             },
         ],
@@ -31,3 +30,4 @@ const router = createBrowserRouter([
 ])
 
 export default router
+

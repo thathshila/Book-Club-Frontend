@@ -39,7 +39,7 @@ const Navbar = () => {
     }
 
     const handleDashboard = () => {
-        console.log("Dashboard")
+        console.log("MainDashboard")
         navigate("/dashboard")
     }
 
