@@ -8,6 +8,7 @@ import LendingList from "./pages/LendingList.tsx";
 import LendBookForm from "./pages/LendingForm.tsx";
 // import AddBook from "./pages/AddBook.tsx";
 import ManageBookPage from "./pages/ManageBookPage.tsx";
+import ManageReaderPage from "./pages/ManageReaderPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
                     { path: "/dashboard/manage-books", element: <ManageBookPage />},
                     { path: "/lendings", element:<LendingList/>},
                     { path: "/lend-book", element:<LendBookForm/>},
+                    { path: "/readers", element:<ManageReaderPage/>},
                 ],
             },
         ],
