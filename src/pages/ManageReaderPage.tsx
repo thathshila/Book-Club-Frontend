@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import ReaderTable from "../components/ReaderTable";
+
 import ReaderFormModal from "../components/ReaderFormModal";
 import apiClient from "../services/apiClient";
 import toast from "react-hot-toast";
+import ReaderTable from "../components/ReaderTable.tsx";
 
 export interface Reader {
     _id: string;

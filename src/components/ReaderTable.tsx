@@ -1,5 +1,5 @@
 import React from "react";
-import type {Reader} from "../types/Reader.ts";
+import type {Reader} from "../pages/ManageReaderPage.tsx";
 
 interface Props {
     readers: Reader[];

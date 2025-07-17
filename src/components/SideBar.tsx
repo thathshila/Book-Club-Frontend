@@ -16,7 +16,8 @@ const Sidebar: React.FC = () => {
         setActiveItem(itemId)
         if (itemId === "dashboard") navigate(`/dashboard`)
         if (itemId === "lendings") navigate(`/lendings`)
-        if (itemId === "readers") navigate(`/readers`)
+        if (itemId === "readers") navigate(`/dashboard/readers`)
+        if (itemId === "books") navigate(`/manage-books`)
         else navigate(`/dashboard/${itemId}`)
     }
 
