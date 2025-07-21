@@ -4,11 +4,12 @@ import Login from "./pages/LoginPage"
 import Signup from "./pages/SignUpPage"
 import AdminRoutes from "./pages/AdminRoutes"
 import MainDashboard from "./pages/MainDashboard.tsx";
-import LendingList from "./pages/LendingList.tsx";
-import LendBookForm from "./pages/LendingForm.tsx";
+// import LendingList from "./pages/LendingList.tsx";
+// import LendBookForm from "./pages/LendingForm.tsx";
 // import AddBook from "./pages/AddBook.tsx";
 import ManageBookPage from "./pages/ManageBookPage.tsx";
 import ManageReaderPage from "./pages/ManageReaderPage.tsx";
+import LendingManagementPage from "./pages/ManageLendingPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -24,8 +25,9 @@ const router = createBrowserRouter([
                     { path: "/dashboard", element: <MainDashboard /> },
                     // { path: "/dashboard/add-book", element: <AddBook onBookAdded={() => {}}/>},
                     { path: "/manage-books", element: <ManageBookPage />},
-                    { path: "/dashboard/lendings", element:<LendingList/>},
-                    { path: "/dashboard/lend-book", element:<LendBookForm/>},
+                    // { path: "/dashboard/lendings", element:<LendingList/>},
+                    // { path: "/dashboard/lend-book", element:<LendBookForm/>},
+                    { path: "/dashboard/lendings", element:<LendingManagementPage/>},
                     { path: "/dashboard/readers", element:<ManageReaderPage/>},
                 ],
             },
