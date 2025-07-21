@@ -27,3 +27,9 @@ export const returnBook = async (id: string): Promise<Lending> => {
     const res = await apiClient.put(`/lendings/${id}/return`);
     return res.data.lending;
 };
+
+
+export const sendOverdueNotifications = async () => {
+    const response = await apiClient.post("/notifications/send-overdue-notifications");
+    return response.data;
+};
