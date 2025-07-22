@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom"
 import Layout from "./pages/Layout"
 import Login from "./pages/LoginPage"
 import Signup from "./pages/SignUpPage"
-import AdminRoutes from "./pages/AdminRoutes"
+import AdminRoutes from "./context/AdminRoutes.tsx"
 import MainDashboard from "./pages/MainDashboard.tsx";
 // import LendingList from "./pages/LendingList.tsx";
 // import LendBookForm from "./pages/LendingForm.tsx";

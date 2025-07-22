@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
-import { getLendings, returnBook } from "../services/lendingService";
-import type { Lending } from "../types/Lending";
+import { getLendings, returnBook } from "../services/lendingService.ts";
+import type { Lending } from "../types/Lending.ts";
 import toast from "react-hot-toast";
 
 const LendingList = ({ refreshFlag }: { refreshFlag: boolean }) => {
@@ -39,6 +39,7 @@ const LendingList = ({ refreshFlag }: { refreshFlag: boolean }) => {
         return (lending.status === "borrowed" || lending.status === "overdue") &&
             new Date(lending.dueDate) < new Date();
     };
+
 
     if (loading) return <p>Loading lending history...</p>;
 

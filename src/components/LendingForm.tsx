@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { lendBook } from "../services/lendingService";
+import { lendBook } from "../services/lendingService.ts";
 import toast from "react-hot-toast";
 
 const LendBookForm = ({ onLend }: { onLend: () => void }) => {

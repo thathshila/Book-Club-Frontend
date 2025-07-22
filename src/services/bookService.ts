@@ -33,3 +33,8 @@ export const updateBook = async (id: string, data: FormData) => {
 export const deleteBook = async (id: string) => {
     await apiClient.delete(`/books/${id}`)
 }
+
+export const getFilteredBooks = async (params: { title?: string; author?: string; genre?: string; isbn?: string }) => {
+    const res = await apiClient.get<Book[]>("/books/filter", { params });
+    return res.data;
+};

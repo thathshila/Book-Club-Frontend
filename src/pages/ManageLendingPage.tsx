@@ -22,8 +22,8 @@
 //
 // export default LendingManagementPage;
 import { useState } from "react";
-import LendBookForm from "../pages/LendingForm";
-import LendingList from "../pages/LendingList";
+import LendBookForm from "../components/LendingForm.tsx";
+import LendingList from "../components/LendingList.tsx";
 import { sendOverdueNotifications } from "../services/lendingService";
 import toast from "react-hot-toast";
 

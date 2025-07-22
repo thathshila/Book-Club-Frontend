@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { addBook } from "../services/bookService"
+import { addBook } from "../services/bookService.ts"
 import toast from "react-hot-toast"
 
 const AddBookForm = ({ onBookAdded }: { onBookAdded: () => void }) => {
