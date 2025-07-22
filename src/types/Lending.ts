@@ -14,5 +14,5 @@ export type Lending = {
     borrowDate: string;
     dueDate: string;
     returnDate?: string;
-    status: "borrowed" | "returned";
+    status: "borrowed" | "returned" | "overdue";
 };

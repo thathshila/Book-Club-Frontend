@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { getLendings, returnBook } from "../services/lendingService";
 import type { Lending } from "../types/Lending";
@@ -34,6 +35,11 @@ const LendingList = ({ refreshFlag }: { refreshFlag: boolean }) => {
         }
     };
 
+    const isOverdue = (lending: Lending) => {
+        return (lending.status === "borrowed" || lending.status === "overdue") &&
+            new Date(lending.dueDate) < new Date();
+    };
+
     if (loading) return <p>Loading lending history...</p>;
 
     return (
@@ -60,13 +66,22 @@ const LendingList = ({ refreshFlag }: { refreshFlag: boolean }) => {
                                     {new Date(lending.dueDate).toLocaleDateString()}
                                 </p>
                                 <p>
-                                    <strong>Status:</strong> {lending.status}
+                                    <strong>Status:</strong>{" "}
+                                    {(lending.status === "overdue" || isOverdue(lending)) ? (
+                                        <span className="text-red-600 font-semibold">Overdue</span>
+                                    ) : (
+                                        lending.status
+                                    )}
                                 </p>
                             </div>
-                            {lending.status === "borrowed" && (
+                            {(lending.status === "borrowed" || lending.status === "overdue") && (
                                 <button
                                     onClick={() => handleReturn(lending._id)}
-                                    className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                                    className={`px-3 py-1 rounded text-white ${
+                                        isOverdue(lending) || lending.status === "overdue"
+                                            ? "bg-red-600 hover:bg-red-700"
+                                            : "bg-green-600 hover:bg-green-700"
+                                    }`}
                                 >
                                     Mark Returned
                                 </button>
