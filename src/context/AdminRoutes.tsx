@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom"
-import Sidebar from "../components/SideBar"
-import { useAuth } from "../context/UseAuth"
+import Sidebar from "../components/SideBar.tsx"
+import { useAuth } from "./UseAuth.ts"
 
 const AdminRoutes = () => {
     const { isLoggedIn } = useAuth()
