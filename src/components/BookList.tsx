@@ -284,24 +284,69 @@ const BookList = ({ refreshFlag }: { refreshFlag: boolean }) => {
                 <p>No books available.</p>
             ) : (
                 <div className="grid gap-4">
+                    {/*{books.map((book) => (*/}
+                    {/*    <div*/}
+                    {/*        key={book._id}*/}
+                    {/*        className="border rounded p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"*/}
+                    {/*    >*/}
+                    {/*        <div>*/}
+                    {/*            <h3 className="font-semibold">{book.title} by {book.author}</h3>*/}
+                    {/*            <p>ISBN: {book.isbn}</p>*/}
+                    {/*            <p>Copies Available: {book.copiesAvailable}</p>*/}
+                    {/*            {book.profileImage && (*/}
+                    {/*                <img*/}
+                    {/*                    src={book.profileImage}*/}
+                    {/*                    alt={book.title}*/}
+                    {/*                    className="h-24 mt-2"*/}
+                    {/*                />*/}
+                    {/*            )}*/}
+                    {/*        </div>*/}
+                    {/*        <div className="space-x-2">*/}
+                    {/*            <button*/}
+                    {/*                onClick={() => setEditBook(book)}*/}
+                    {/*                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"*/}
+                    {/*            >*/}
+                    {/*                Update*/}
+                    {/*            </button>*/}
+                    {/*            <button*/}
+                    {/*                onClick={() => handleDelete(book._id!)}*/}
+                    {/*                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"*/}
+                    {/*            >*/}
+                    {/*                Delete*/}
+                    {/*            </button>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*))}*/}
                     {books.map((book) => (
                         <div
                             key={book._id}
-                            className="border rounded p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+                            className="border rounded p-4 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 bg-white shadow"
                         >
-                            <div>
-                                <h3 className="font-semibold">{book.title} by {book.author}</h3>
-                                <p>ISBN: {book.isbn}</p>
-                                <p>Copies Available: {book.copiesAvailable}</p>
+                            <div className="flex flex-col gap-1 w-full">
+                                <h3 className="font-semibold text-lg">{book.title}</h3>
+                                <p><span className="font-medium">Author:</span> {book.author}</p>
+                                {book.isbn && <p><span className="font-medium">ISBN:</span> {book.isbn}</p>}
+                                {book.publishedDate && (
+                                    <p><span className="font-medium">Published Date:</span> {new Date(book.publishedDate).toISOString().split("T")[0]}</p>
+                                )}
+                                {book.genre && <p><span className="font-medium">Genre:</span> {book.genre}</p>}
+                                {book.description && (
+                                    <p><span className="font-medium">Description:</span> {book.description}</p>
+                                )}
+                                <p><span className="font-medium">Copies Available:</span> {book.copiesAvailable}</p>
+                                {book.createdAt && (
+                                    <p><span className="font-medium">Added On:</span> {new Date(book.createdAt).toISOString().split("T")[0]}</p>
+                                )}
                                 {book.profileImage && (
                                     <img
                                         src={book.profileImage}
                                         alt={book.title}
-                                        className="h-24 mt-2"
+                                        className="h-32 w-auto object-cover rounded mt-2 border"
                                     />
                                 )}
                             </div>
-                            <div className="space-x-2">
+
+                            <div className="flex sm:flex-col gap-2 sm:items-end">
                                 <button
                                     onClick={() => setEditBook(book)}
                                     className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
@@ -317,6 +362,7 @@ const BookList = ({ refreshFlag }: { refreshFlag: boolean }) => {
                             </div>
                         </div>
                     ))}
+
                 </div>
             )}
 

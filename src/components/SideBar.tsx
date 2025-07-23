@@ -12,14 +12,24 @@ const Sidebar: React.FC = () => {
     const [activeItem, setActiveItem] = useState<string>("dashboard")
     const navigate = useNavigate()
 
+    // const handleItemClick = (itemId: string) => {
+    //     setActiveItem(itemId)
+    //     if (itemId === "dashboard") navigate(`/dashboard`)
+    //     if (itemId === "lendings") navigate(`/lendings`)
+    //     if (itemId === "readers") navigate(`/dashboard/readers`)
+    //     if (itemId === "books") navigate(`/manage-books`)
+    //     else navigate(`/dashboard/${itemId}`)
+    // }
+
     const handleItemClick = (itemId: string) => {
-        setActiveItem(itemId)
-        if (itemId === "dashboard") navigate(`/dashboard`)
-        if (itemId === "lendings") navigate(`/lendings`)
-        if (itemId === "readers") navigate(`/dashboard/readers`)
-        if (itemId === "books") navigate(`/manage-books`)
-        else navigate(`/dashboard/${itemId}`)
-    }
+        setActiveItem(itemId);
+        if (itemId === "dashboard") navigate(`/dashboard`);
+        else if (itemId === "lendings") navigate(`/dashboard/lendings`);
+        else if (itemId === "readers") navigate(`/dashboard/readers`);
+        else if (itemId === "books") navigate(`/manage-books`);
+        else navigate(`/dashboard/${itemId}`);
+    };
+
 
     const sidebarItems: SidebarItem[] = [
         {

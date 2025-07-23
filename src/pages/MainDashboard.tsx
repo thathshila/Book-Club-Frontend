@@ -53,33 +53,33 @@ const MainDashboard: React.FC = () => {
                 <div className='bg-white rounded-lg shadow p-6'>
                     <h3 className='text-lg font-semibold text-gray-900 mb-4'>Quick Actions</h3>
                     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-                        {/*<button  onClick={() => navigate("/dashboard/add-book")}*/}
-                        {/*    className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>*/}
-                        {/*    <MdMenuBook className='w-8 h-8 text-indigo-600 mx-auto mb-2' />*/}
-                        {/*    <p className='text-sm font-medium text-gray-900'>Add Book</p>*/}
-                        {/*</button>*/}
-                        <button onClick={() => navigate("/dashboard/manage-books")}
+                        <button onClick={() => navigate("/manage-books")}
                                 className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150">
                             <MdMenuBook className="w-8 h-8 text-indigo-600 mx-auto mb-2" />
                             <p className="text-sm font-medium text-gray-900">Manage Books</p>
                         </button>
-                        <button className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
+                        <button onClick={() => navigate("/dashboard/readers")}
+                            className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
                             <MdPerson className='w-8 h-8 text-green-600 mx-auto mb-2' />
                             <p className='text-sm font-medium text-gray-900'>Add Reader</p>
                         </button>
-                        <button className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
+                        <button onClick={() => navigate("/dashboard/lendings")}
+                            className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
                             <MdLibraryBooks className='w-8 h-8 text-yellow-600 mx-auto mb-2' />
                             <p className='text-sm font-medium text-gray-900'>Lend Book</p>
                         </button>
-                        <button className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
+                        <button onClick={() => navigate("/dashboard/lendingList")}
+                            className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
                             <MdAssignmentReturn className='w-8 h-8 text-purple-600 mx-auto mb-2' />
                             <p className='text-sm font-medium text-gray-900'>Mark Return</p>
                         </button>
-                        <button className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
+                        <button onClick={() => navigate("/dashboard/lendings")}
+                            className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
                             <MdNotificationsActive className='w-8 h-8 text-red-600 mx-auto mb-2' />
                             <p className='text-sm font-medium text-gray-900'>Send Overdue Reminder</p>
                         </button>
-                        <button className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
+                        <button onClick={() => navigate("/dashboard/lendingList")}
+                            className='p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-150'>
                             <MdHistory className='w-8 h-8 text-blue-600 mx-auto mb-2' />
                             <p className='text-sm font-medium text-gray-900'>View Lending History</p>
                         </button>
