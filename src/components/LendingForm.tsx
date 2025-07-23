@@ -2,19 +2,32 @@ import { useState } from "react";
 import { lendBook } from "../services/lendingService.ts";
 import toast from "react-hot-toast";
 
+// Utility to get today + 14 days in yyyy-mm-dd
+const getDefaultDueDate = () => {
+    const today = new Date();
+    today.setDate(today.getDate() + 14);
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+};
+
 const LendBookForm = ({ onLend }: { onLend: () => void }) => {
     const [memberId, setMemberId] = useState("");
     const [isbn, setIsbn] = useState("");
-    const [dueDate, setDueDate] = useState("");
+    const [dueDate, setDueDate] = useState(getDefaultDueDate());
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             await lendBook({ memberId, isbn, dueDate });
             toast.success("Book lent successfully");
+
+            // Reset with default due date
             setMemberId("");
             setIsbn("");
-            setDueDate("");
+            setDueDate(getDefaultDueDate());
+
             onLend();
         } catch (error: any) {
             toast.error(error?.response?.data?.message || "Failed to lend book");
