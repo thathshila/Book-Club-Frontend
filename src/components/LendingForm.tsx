@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { lendBook } from "../services/lendingService.ts";
 import toast from "react-hot-toast";
@@ -20,7 +21,8 @@ const LendBookForm = ({ onLend }: { onLend: () => void }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await lendBook({ memberId, isbn, dueDate });
+            const fullMemberId = `Reader-2025-${memberId}`;
+            await lendBook({ memberId: fullMemberId, isbn, dueDate });
             toast.success("Book lent successfully");
 
             // Reset with default due date
@@ -40,7 +42,7 @@ const LendBookForm = ({ onLend }: { onLend: () => void }) => {
             <form onSubmit={handleSubmit} className="grid gap-4">
                 <input
                     type="text"
-                    placeholder="Member ID"
+                    placeholder="Enter last 5 digits of Member ID"
                     value={memberId}
                     onChange={(e) => setMemberId(e.target.value)}
                     className="border p-2 rounded"
