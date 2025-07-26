@@ -38,3 +38,4 @@ export const getFilteredBooks = async (params: { title?: string; author?: string
     const res = await apiClient.get<Book[]>("/books/filter", { params });
     return res.data;
 };
+
