@@ -2,7 +2,7 @@ export interface User {
     name: string;
     email: string;
     password?: string;
-    role?: "staff" | "librarian" | "reader";
+    role?: "staff" | "librarian"
     phone?: string;
     address?: string;
     dateOfBirth?: string;

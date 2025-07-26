@@ -133,6 +133,7 @@ const Sidebar: React.FC = () => {
         else if (itemId === "lendings") navigate(`/dashboard/lendings`);
         else if (itemId === "readers") navigate(`/dashboard/readers`);
         else if (itemId === "books") navigate(`/manage-books`);
+        else if (itemId === "staff") navigate(`/staff`);
         else navigate(`/dashboard/${itemId}`);
     };
 

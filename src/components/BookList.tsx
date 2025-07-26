@@ -604,11 +604,11 @@ const BookList = ({ refreshFlag }: { refreshFlag: boolean }) => {
                         >
                             <div className="flex flex-col md:flex-row gap-6">
                                 {book.profileImage && (
-                                    <div className="w-full md:w-48 flex-shrink-0">
+                                    <div className="w-full md:w-50 flex-shrink-0">
                                         <img
                                             src={book.profileImage}
                                             alt={book.title}
-                                            className="h-48 w-full object-cover rounded-lg border"
+                                            className="h-55 w-full object-cover rounded-lg border"
                                         />
                                     </div>
                                 )}

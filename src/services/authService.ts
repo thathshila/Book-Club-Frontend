@@ -5,7 +5,7 @@ export interface SignUpResponse {
     _id: string
     name: string
     email: string
-    role: "staff" | "librarian" | "reader"
+    role: "staff" | "librarian"
     phone: string
     address: string
     dateOfBirth: string
@@ -20,7 +20,7 @@ export interface LoginResponse {
     _id: string
     name: string
     email: string
-    role: "staff" | "librarian" | "reader"
+    role: "staff" | "librarian"
     accessToken: string
 }
 
@@ -49,3 +49,9 @@ export const logout = async (): Promise<LogoutResponse> => {
     const response = await apiClient.post("/auth/logout")
     return response.data
 }
+
+export const getAllStaff = async (): Promise<User[]> => {
+    const response = await apiClient.get("/auth/staff");
+    return response.data;
+};
+
