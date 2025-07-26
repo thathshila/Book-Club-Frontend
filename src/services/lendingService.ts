@@ -33,3 +33,16 @@ export const sendOverdueNotifications = async () => {
     const response = await apiClient.post("/notifications/send-overdue-notifications");
     return response.data;
 };
+
+
+// ✅ Get all overdue lendings
+export const getOverdueLendings = async () => {
+    const res = await apiClient.get("/lendings/overdue");
+    return res.data;
+};
+
+// ✅ Get overdue payments
+export const getOverduePayments = async () => {
+    const res = await apiClient.get("/lendings/overdue-payments");
+    return res.data;
+};

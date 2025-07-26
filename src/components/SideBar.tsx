@@ -134,6 +134,7 @@ const Sidebar: React.FC = () => {
         else if (itemId === "readers") navigate(`/dashboard/readers`);
         else if (itemId === "books") navigate(`/manage-books`);
         else if (itemId === "staff") navigate(`/staff`);
+        else if (itemId === "manage-overdue") navigate(`/manage-overdue`)
         else navigate(`/dashboard/${itemId}`);
     };
 
