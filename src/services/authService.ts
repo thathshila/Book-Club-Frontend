@@ -55,3 +55,15 @@ export const getAllStaff = async (): Promise<User[]> => {
     return response.data;
 };
 
+export const deleteStaff = async (id: string): Promise<void> => {
+    await apiClient.delete(`/auth/${id}`);
+};
+
+export const updateStaff = async (id: string, formData: FormData): Promise<User> => {
+    const response = await apiClient.put(`/auth/update/${id}`, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+    return response.data;
+};
