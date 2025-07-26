@@ -342,6 +342,11 @@ const Login = () => {
                                     Create your account
                                 </Link>
                             </p>
+                            <p className="text-sm text-right mt-2">
+                                <Link to="/change-password" className="text-blue-600 hover:underline">
+                                    Forgot Password?
+                                </Link>
+                            </p>
                         </div>
                     </form>
                 </div>

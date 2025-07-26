@@ -49,6 +49,7 @@ import LendingManagementPage from "./pages/ManageLendingPage.tsx";
 import LendingList from "./components/LendingList.tsx";
 import StaffList from "./components/StaffList.tsx";
 import ManageOverduePage from "./pages/ManageOverduePage.tsx";
+import ChangePassword from "./components/ChangePassword.tsx";
 
 const router = createBrowserRouter([
     {
@@ -68,9 +69,11 @@ const router = createBrowserRouter([
                     { path: "dashboard/lendings", element: <LendingManagementPage /> },
                     { path: "dashboard/readers", element: <ManageReaderPage /> },
                     { path: "staff" ,element: <StaffList /> },
-                    { path: "dashboard/overdue", element: <ManageOverduePage /> }
+                    { path: "dashboard/overdue", element: <ManageOverduePage /> },
                 ],
             },
+            { path: "change-password", element: <ChangePassword />},
+
         ],
     },
 ]);
