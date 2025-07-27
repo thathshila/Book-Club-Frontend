@@ -50,6 +50,7 @@ import LendingList from "./components/LendingList.tsx";
 import StaffList from "./components/StaffList.tsx";
 import ManageOverduePage from "./pages/ManageOverduePage.tsx";
 import ChangePassword from "./components/ChangePassword.tsx";
+import ManageSystemSettingPage from "./pages/ManageSystemSettingPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -70,10 +71,10 @@ const router = createBrowserRouter([
                     { path: "dashboard/readers", element: <ManageReaderPage /> },
                     { path: "staff" ,element: <StaffList /> },
                     { path: "dashboard/overdue", element: <ManageOverduePage /> },
+                    { path: "system-setting", element: <ManageSystemSettingPage />},
                 ],
             },
             { path: "change-password", element: <ChangePassword />},
-
         ],
     },
 ]);

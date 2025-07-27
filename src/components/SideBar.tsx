@@ -135,6 +135,7 @@ const Sidebar: React.FC = () => {
         else if (itemId === "books") navigate(`/manage-books`);
         else if (itemId === "staff") navigate(`/staff`);
         else if (itemId === "manage-overdue") navigate(`/manage-overdue`)
+        else if (itemId === "system-setting") navigate(`/system-setting`)
         else navigate(`/dashboard/${itemId}`);
     };
 
@@ -175,10 +176,10 @@ const Sidebar: React.FC = () => {
             icon: <MdNotifications className='w-5 h-5' />,
         },
         {
-            id: "system setting",
+            id: "system-setting", // 🔧 Use hyphen instead of space
             label: "System Setting",
             icon: <MdSettings className='w-5 h-5' />,
-        },
+        }
     ]
 
     return (
