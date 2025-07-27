@@ -158,6 +158,7 @@ import { login } from "../services/authService"
 import toast from "react-hot-toast"
 import axios from "axios"
 import { useAuth } from "../context/UseAuth"
+import ChangePassword from "../components/ChangePassword"
 
 interface FormData {
     email: string
@@ -177,6 +178,7 @@ const Login = () => {
     const [errors, setErrors] = useState<FormErrors>({})
     const [isLoading, setIsLoading] = useState(false)
     const { login: authenticate } = useAuth()
+    const [showModal, setShowModal] = useState(false);
 
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {}
@@ -342,11 +344,26 @@ const Login = () => {
                                     Create your account
                                 </Link>
                             </p>
-                            <p className="text-sm text-right mt-2">
-                                <Link to="/change-password" className="text-blue-600 hover:underline">
-                                    Forgot Password?
-                                </Link>
-                            </p>
+                            <button
+                                type="button"
+                                onClick={() => setShowModal(true)}
+                                className="text-blue-600 hover:underline"
+                            >
+                                Forgot Password?
+                            </button>
+                            {showModal && (
+                                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                                    <div className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-md">
+                                        <button
+                                            onClick={() => setShowModal(false)}
+                                            className="absolute top-2 right-3 text-gray-600 hover:text-red-600 text-xl font-bold"
+                                        >
+                                            &times;
+                                        </button>
+                                        <ChangePassword onClose={() => setShowModal(false)} />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </form>
                 </div>

@@ -126,18 +126,15 @@
 //
 // export default ChangePassword;
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { sendOtp, verifyOtp, resetPassword } from "../services/authService";
 
-const ChangePassword = () => {
+const ChangePassword = ({ onClose }: { onClose?: () => void }) => {
     const [email, setEmail] = useState("");
     const [otp, setOtp] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [step, setStep] = useState<"email" | "otp" | "reset">("email");
     const [isLoading, setIsLoading] = useState(false);
-
-    const navigate = useNavigate(); // ✅ for redirection
 
     const handleSendOtp = async () => {
         try {
@@ -171,10 +168,9 @@ const ChangePassword = () => {
             await resetPassword(email, otp, newPassword);
             toast.success("Password reset successful");
 
-            // ✅ Redirect to login page after successful reset
             setTimeout(() => {
-                navigate("/login");
-            }, 1000); // optional delay for better UX
+                onClose?.(); // ✅ close the modal
+            }, 1000);
         } catch (err: any) {
             toast.error(err.response?.data?.message || "Failed to reset password");
         } finally {
