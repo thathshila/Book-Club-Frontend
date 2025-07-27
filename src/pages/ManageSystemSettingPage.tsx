@@ -1,3 +1,156 @@
+// import { useEffect, useState } from "react";
+// import toast from "react-hot-toast";
+// import {
+//     getLoggedInUser,
+//     updateStaff,
+//     sendOtp,
+//     verifyOtp,
+//     resetPassword,
+// } from "../services/authService";
+// import type { User } from "../types/User";
+//
+// const ManageSystemSettingPage = () => {
+//     const [user, setUser] = useState<User | null>(null);
+//     const [formData, setFormData] = useState<FormData | null>(null);
+//     const [editing, setEditing] = useState(false);
+//
+//     const [email, setEmail] = useState("");
+//     const [otp, setOtp] = useState("");
+//     const [newPassword, setNewPassword] = useState("");
+//     const [step, setStep] = useState<"email" | "otp" | "password">("email");
+//
+//     useEffect(() => {
+//         const fetchUser = async () => {
+//             try {
+//                 const data = await getLoggedInUser();
+//                 setUser(data);
+//                 setEmail(data.email);
+//             } catch (error) {
+//                 toast.error("Failed to load user details");
+//             }
+//         };
+//         fetchUser();
+//     }, []);
+//
+//     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//         const updatedFormData = formData || new FormData();
+//         updatedFormData.set(e.target.name, e.target.value);
+//         setFormData(updatedFormData);
+//     };
+//
+//     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//         const file = e.target.files?.[0];
+//         if (file) {
+//             const updatedFormData = formData || new FormData();
+//             updatedFormData.set("profileImage", file);
+//             setFormData(updatedFormData);
+//         }
+//     };
+//
+//     const handleUpdate = async () => {
+//         if (!user || !formData) return;
+//         try {
+//             const updated = await updateStaff(user._id, formData);
+//             setUser(updated);
+//             toast.success("Profile updated");
+//             setEditing(false);
+//         } catch {
+//             toast.error("Update failed");
+//         }
+//     };
+//
+//     const handlePasswordReset = async () => {
+//         try {
+//             if (step === "email") {
+//                 await sendOtp(email);
+//                 toast.success("OTP sent");
+//                 setStep("otp");
+//             } else if (step === "otp") {
+//                 await verifyOtp(email, otp);
+//                 toast.success("OTP verified");
+//                 setStep("password");
+//             } else if (step === "password") {
+//                 await resetPassword(email, otp, newPassword);
+//                 toast.success("Password updated");
+//                 setStep("email");
+//                 setOtp("");
+//                 setNewPassword("");
+//             }
+//         } catch {
+//             toast.error("Something went wrong");
+//         }
+//     };
+//
+//     if (!user) return <div className="text-center mt-10">Loading user details...</div>;
+//
+//     return (
+//         <div className="p-6 max-w-3xl mx-auto space-y-6 bg-white shadow rounded-lg">
+//             <h2 className="text-2xl font-bold">Manage System Settings</h2>
+//
+//             {!editing ? (
+//                 <div className="space-y-2">
+//                     <p><strong>Name:</strong> {user.name}</p>
+//                     <p><strong>Email:</strong> {user.email}</p>
+//                     <p><strong>Phone:</strong> {user.phone}</p>
+//                     <p><strong>Address:</strong> {user.address}</p>
+//                     <p><strong>Date of Birth:</strong> {user.dateOfBirth?.slice(0, 10)}</p>
+//                     {user.profileImage && (
+//                         <img src={user.profileImage} alt="Profile" className="w-20 h-20 object-cover rounded-full" />
+//                     )}
+//                     <button className="btn btn-primary mt-2" onClick={() => setEditing(true)}>Edit Profile</button>
+//                 </div>
+//             ) : (
+//                 <div className="space-y-3">
+//                     <input type="text" name="name" placeholder="Name" defaultValue={user.name} onChange={handleChange} className="input input-bordered w-full" />
+//                     <input type="text" name="phone" placeholder="Phone" defaultValue={user.phone} onChange={handleChange} className="input input-bordered w-full" />
+//                     <input type="text" name="address" placeholder="Address" defaultValue={user.address} onChange={handleChange} className="input input-bordered w-full" />
+//                     <input type="date" name="dateOfBirth" defaultValue={user.dateOfBirth?.slice(0, 10)} onChange={handleChange} className="input input-bordered w-full" />
+//                     <input type="file" name="profileImage" onChange={handleImageChange} className="file-input file-input-bordered w-full" />
+//                     <div className="flex gap-2 mt-2">
+//                         <button className="btn btn-success" onClick={handleUpdate}>Save</button>
+//                         <button className="btn btn-outline" onClick={() => setEditing(false)}>Cancel</button>
+//                     </div>
+//                 </div>
+//             )}
+//
+//             {/* Password Reset Section */}
+//             <div className="pt-6 border-t mt-6">
+//                 <h3 className="font-semibold text-lg mb-2">Change Password</h3>
+//                 {step === "email" && (
+//                     <button className="btn btn-warning" onClick={handlePasswordReset}>Send OTP</button>
+//                 )}
+//                 {step === "otp" && (
+//                     <div className="space-y-2">
+//                         <input
+//                             type="text"
+//                             placeholder="Enter OTP"
+//                             value={otp}
+//                             onChange={(e) => setOtp(e.target.value)}
+//                             className="input input-bordered w-full"
+//                         />
+//                         <button className="btn btn-warning" onClick={handlePasswordReset}>Verify OTP</button>
+//                     </div>
+//                 )}
+//                 {step === "password" && (
+//                     <div className="space-y-2">
+//                         <input
+//                             type="password"
+//                             placeholder="New Password"
+//                             value={newPassword}
+//                             onChange={(e) => setNewPassword(e.target.value)}
+//                             className="input input-bordered w-full"
+//                         />
+//                         <button className="btn btn-success" onClick={handlePasswordReset}>Reset Password</button>
+//                     </div>
+//                 )}
+//             </div>
+//         </div>
+//     );
+// };
+//
+// export default ManageSystemSettingPage;
+
+
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -13,11 +166,11 @@ const ManageSystemSettingPage = () => {
     const [user, setUser] = useState<User | null>(null);
     const [formData, setFormData] = useState<FormData | null>(null);
     const [editing, setEditing] = useState(false);
-
     const [email, setEmail] = useState("");
     const [otp, setOtp] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [step, setStep] = useState<"email" | "otp" | "password">("email");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -27,6 +180,8 @@ const ManageSystemSettingPage = () => {
                 setEmail(data.email);
             } catch (error) {
                 toast.error("Failed to load user details");
+            } finally {
+                setLoading(false);
             }
         };
         fetchUser();
@@ -44,6 +199,15 @@ const ManageSystemSettingPage = () => {
             const updatedFormData = formData || new FormData();
             updatedFormData.set("profileImage", file);
             setFormData(updatedFormData);
+
+            // Preview the selected image
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                if (user) {
+                    setUser({ ...user, profileImage: event.target?.result as string });
+                }
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -52,10 +216,10 @@ const ManageSystemSettingPage = () => {
         try {
             const updated = await updateStaff(user._id, formData);
             setUser(updated);
-            toast.success("Profile updated");
+            toast.success("Profile updated successfully");
             setEditing(false);
         } catch {
-            toast.error("Update failed");
+            toast.error("Failed to update profile");
         }
     };
 
@@ -63,86 +227,302 @@ const ManageSystemSettingPage = () => {
         try {
             if (step === "email") {
                 await sendOtp(email);
-                toast.success("OTP sent");
+                toast.success("OTP sent to your email");
                 setStep("otp");
             } else if (step === "otp") {
                 await verifyOtp(email, otp);
-                toast.success("OTP verified");
+                toast.success("OTP verified successfully");
                 setStep("password");
             } else if (step === "password") {
                 await resetPassword(email, otp, newPassword);
-                toast.success("Password updated");
+                toast.success("Password updated successfully");
                 setStep("email");
                 setOtp("");
                 setNewPassword("");
             }
-        } catch {
-            toast.error("Something went wrong");
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : "Something went wrong");
         }
     };
 
-    if (!user) return <div className="text-center mt-10">Loading user details...</div>;
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="text-center p-6 bg-white rounded-lg shadow-md max-w-md w-full">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-2">User Not Found</h2>
+                    <p className="text-gray-600">Unable to load user details. Please try again later.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="p-6 max-w-3xl mx-auto space-y-6 bg-white shadow rounded-lg">
-            <h2 className="text-2xl font-bold">Manage System Settings</h2>
-
-            {!editing ? (
-                <div className="space-y-2">
-                    <p><strong>Name:</strong> {user.name}</p>
-                    <p><strong>Email:</strong> {user.email}</p>
-                    <p><strong>Phone:</strong> {user.phone}</p>
-                    <p><strong>Address:</strong> {user.address}</p>
-                    <p><strong>Date of Birth:</strong> {user.dateOfBirth?.slice(0, 10)}</p>
-                    {user.profileImage && (
-                        <img src={user.profileImage} alt="Profile" className="w-20 h-20 object-cover rounded-full" />
-                    )}
-                    <button className="btn btn-primary mt-2" onClick={() => setEditing(true)}>Edit Profile</button>
+        <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto space-y-8">
+                {/* Header */}
+                <div className="text-center">
+                    <h1 className="text-3xl font-bold text-gray-900">System Settings</h1>
+                    <p className="mt-2 text-sm text-gray-600">
+                        Manage your account details and security settings
+                    </p>
                 </div>
-            ) : (
-                <div className="space-y-3">
-                    <input type="text" name="name" placeholder="Name" defaultValue={user.name} onChange={handleChange} className="input input-bordered w-full" />
-                    <input type="text" name="phone" placeholder="Phone" defaultValue={user.phone} onChange={handleChange} className="input input-bordered w-full" />
-                    <input type="text" name="address" placeholder="Address" defaultValue={user.address} onChange={handleChange} className="input input-bordered w-full" />
-                    <input type="date" name="dateOfBirth" defaultValue={user.dateOfBirth?.slice(0, 10)} onChange={handleChange} className="input input-bordered w-full" />
-                    <input type="file" name="profileImage" onChange={handleImageChange} className="file-input file-input-bordered w-full" />
-                    <div className="flex gap-2 mt-2">
-                        <button className="btn btn-success" onClick={handleUpdate}>Save</button>
-                        <button className="btn btn-outline" onClick={() => setEditing(false)}>Cancel</button>
+
+                {/* Profile Card */}
+                <div className="bg-white shadow rounded-lg overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-200">
+                        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+                            <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            Profile Information
+                        </h2>
+                    </div>
+
+                    <div className="px-6 py-4">
+                        {!editing ? (
+                            <div className="space-y-4">
+                                <div className="flex flex-col items-center mb-6">
+                                    {user.profileImage ? (
+                                        <img
+                                            src={user.profileImage}
+                                            alt="Profile"
+                                            className="w-24 h-24 rounded-full object-cover border-4 border-blue-100"
+                                        />
+                                    ) : (
+                                        <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-4xl text-gray-500">
+                                            {user.name.charAt(0).toUpperCase()}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-500">Full Name</label>
+                                        <p className="mt-1 text-sm text-gray-900">{user.name}</p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-500">Email</label>
+                                        <p className="mt-1 text-sm text-gray-900">{user.email}</p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-500">Phone</label>
+                                        <p className="mt-1 text-sm text-gray-900">{user.phone || 'Not provided'}</p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-500">Date of Birth</label>
+                                        <p className="mt-1 text-sm text-gray-900">
+                                            {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'Not provided'}
+                                        </p>
+                                    </div>
+                                    <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-500">Address</label>
+                                        <p className="mt-1 text-sm text-gray-900">{user.address || 'Not provided'}</p>
+                                    </div>
+                                </div>
+
+                                <div className="pt-4">
+                                    <button
+                                        onClick={() => setEditing(true)}
+                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                    >
+                                        Edit Profile
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                <div className="flex flex-col items-center mb-6">
+                                    <label className="relative cursor-pointer">
+                                        {user.profileImage ? (
+                                            <img
+                                                src={user.profileImage}
+                                                alt="Profile"
+                                                className="w-24 h-24 rounded-full object-cover border-4 border-blue-100"
+                                            />
+                                        ) : (
+                                            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-4xl text-gray-500">
+                                                {user.name.charAt(0).toUpperCase()}
+                                            </div>
+                                        )}
+                                        <div className="absolute bottom-0 right-0 bg-blue-500 text-white p-1 rounded-full">
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                        </div>
+                                        <input
+                                            type="file"
+                                            name="profileImage"
+                                            onChange={handleImageChange}
+                                            className="hidden"
+                                            accept="image/*"
+                                        />
+                                    </label>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            defaultValue={user.name}
+                                            onChange={handleChange}
+                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
+                                        <input
+                                            type="text"
+                                            id="phone"
+                                            name="phone"
+                                            defaultValue={user.phone}
+                                            onChange={handleChange}
+                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Date of Birth</label>
+                                        <input
+                                            type="date"
+                                            id="dateOfBirth"
+                                            name="dateOfBirth"
+                                            defaultValue={user.dateOfBirth?.slice(0, 10)}
+                                            onChange={handleChange}
+                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        />
+                                    </div>
+                                    <div className="md:col-span-2">
+                                        <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+                                        <input
+                                            type="text"
+                                            id="address"
+                                            name="address"
+                                            defaultValue={user.address}
+                                            onChange={handleChange}
+                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-end space-x-3 pt-4">
+                                    <button
+                                        onClick={() => setEditing(false)}
+                                        className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleUpdate}
+                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                    >
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
-            )}
 
-            {/* Password Reset Section */}
-            <div className="pt-6 border-t mt-6">
-                <h3 className="font-semibold text-lg mb-2">Change Password</h3>
-                {step === "email" && (
-                    <button className="btn btn-warning" onClick={handlePasswordReset}>Send OTP</button>
-                )}
-                {step === "otp" && (
-                    <div className="space-y-2">
-                        <input
-                            type="text"
-                            placeholder="Enter OTP"
-                            value={otp}
-                            onChange={(e) => setOtp(e.target.value)}
-                            className="input input-bordered w-full"
-                        />
-                        <button className="btn btn-warning" onClick={handlePasswordReset}>Verify OTP</button>
+                {/* Password Reset Card */}
+                <div className="bg-white shadow rounded-lg overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-200">
+                        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+                            <svg className="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            Password Settings
+                        </h2>
                     </div>
-                )}
-                {step === "password" && (
-                    <div className="space-y-2">
-                        <input
-                            type="password"
-                            placeholder="New Password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            className="input input-bordered w-full"
-                        />
-                        <button className="btn btn-success" onClick={handlePasswordReset}>Reset Password</button>
+
+                    <div className="px-6 py-4">
+                        <div className="space-y-4">
+                            {step === "email" && (
+                                <div>
+                                    <p className="text-sm text-gray-600 mb-4">
+                                        To change your password, we'll send a verification code to your email address.
+                                    </p>
+                                    <button
+                                        onClick={handlePasswordReset}
+                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                    >
+                                        Send Verification Code
+                                    </button>
+                                </div>
+                            )}
+
+                            {step === "otp" && (
+                                <div className="space-y-4">
+                                    <p className="text-sm text-gray-600">
+                                        We've sent a 6-digit verification code to <span className="font-medium">{email}</span>. Please enter it below.
+                                    </p>
+                                    <div>
+                                        <label htmlFor="otp" className="block text-sm font-medium text-gray-700">Verification Code</label>
+                                        <input
+                                            type="text"
+                                            id="otp"
+                                            value={otp}
+                                            onChange={(e) => setOtp(e.target.value)}
+                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                            placeholder="Enter 6-digit code"
+                                        />
+                                    </div>
+                                    <div className="flex justify-end">
+                                        <button
+                                            onClick={handlePasswordReset}
+                                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        >
+                                            Verify Code
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {step === "password" && (
+                                <div className="space-y-4">
+                                    <p className="text-sm text-gray-600">
+                                        Please enter your new password. Make sure it's secure and at least 8 characters long.
+                                    </p>
+                                    <div>
+                                        <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">New Password</label>
+                                        <input
+                                            type="password"
+                                            id="newPassword"
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                            placeholder="Enter new password"
+                                        />
+                                    </div>
+                                    <div className="flex justify-end space-x-3">
+                                        <button
+                                            onClick={() => setStep("email")}
+                                            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        >
+                                            Back
+                                        </button>
+                                        <button
+                                            onClick={handlePasswordReset}
+                                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        >
+                                            Reset Password
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                )}
+                </div>
             </div>
         </div>
     );

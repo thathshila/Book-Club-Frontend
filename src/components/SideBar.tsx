@@ -69,8 +69,8 @@ const Sidebar: React.FC = () => {
             icon: <MdSchedule className='w-5 h-5' />,
         },
         {
-            id: "notification",
-            label: "Manage Notification",
+            id: "audit",
+            label: "Manage Audit",
             icon: <MdNotifications className='w-5 h-5' />,
         },
         {
