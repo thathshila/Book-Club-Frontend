@@ -51,6 +51,7 @@ import StaffList from "./components/StaffList.tsx";
 import ManageOverduePage from "./pages/ManageOverduePage.tsx";
 import ChangePassword from "./components/ChangePassword.tsx";
 import ManageSystemSettingPage from "./pages/ManageSystemSettingPage.tsx";
+import ManageAuditLogPage from "./pages/ManageAuditLogPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -72,6 +73,7 @@ const router = createBrowserRouter([
                     { path: "staff" ,element: <StaffList /> },
                     { path: "dashboard/overdue", element: <ManageOverduePage /> },
                     { path: "system-setting", element: <ManageSystemSettingPage />},
+                    { path: "dashboard/audit", element: <ManageAuditLogPage />},
                 ],
             },
             { path: "change-password", element: <ChangePassword />},

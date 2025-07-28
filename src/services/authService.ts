@@ -98,3 +98,5 @@ export const getLoggedInUser = async (): Promise<User> => {
     const response = await apiClient.get("/auth/get");
     return response.data.user; // ✅ Fix here
 };
+
+
