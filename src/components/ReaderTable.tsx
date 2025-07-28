@@ -220,8 +220,153 @@
 
 
 // ReaderTable.tsx - Professional Design
+// import React from "react";
+// import type {Reader} from "../pages/ManageReaderPage.tsx";
+//
+// interface TableProps {
+//     readers: Reader[];
+//     onEdit: (reader: Reader) => void;
+//     onDelete: (id: string) => void;
+// }
+//
+// const ReaderTable: React.FC<TableProps> = ({ readers, onEdit, onDelete }) => {
+//     return (
+//         <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
+//             <div className="overflow-x-auto">
+//                 <table className="min-w-full">
+//                     <thead>
+//                     <tr className="bg-gray-50 border-b border-gray-200">
+//                         <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+//                             Member ID
+//                         </th>
+//                         <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+//                             Name
+//                         </th>
+//                         <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+//                             Email
+//                         </th>
+//                         <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+//                             Phone
+//                         </th>
+//                         <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+//                             Address
+//                         </th>
+//                         <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+//                             Date of Birth
+//                         </th>
+//                         <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+//                             NIC
+//                         </th>
+//                         <th className="py-3 px-4 text-center text-sm font-medium text-gray-600">
+//                             Actions
+//                         </th>
+//                     </tr>
+//                     </thead>
+//                     <tbody className="divide-y divide-gray-200">
+//                     {readers.map((reader, index) => (
+//                         <tr
+//                             key={reader._id}
+//                             className="hover:bg-gray-50 transition-colors"
+//                         >
+//                             <td className="py-3 px-4">
+//                                 <div className="flex items-center space-x-3">
+//                                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
+//                                         {reader.memberId?.slice(-2) || '##'}
+//                                     </div>
+//                                     <span className="text-sm font-medium text-gray-900">
+//                                         {reader.memberId}
+//                                     </span>
+//                                 </div>
+//                             </td>
+//                             <td className="py-3 px-4">
+//                                 <span className="text-sm font-medium text-gray-900">
+//                                     {reader.name}
+//                                 </span>
+//                             </td>
+//                             <td className="py-3 px-4">
+//                                 <span className="text-sm text-gray-600">
+//                                     {reader.email}
+//                                 </span>
+//                             </td>
+//                             <td className="py-3 px-4">
+//                                 {reader.phone ? (
+//                                     <span className="text-sm text-gray-900">
+//                                         {reader.phone}
+//                                     </span>
+//                                 ) : (
+//                                     <span className="text-sm text-gray-400">Not provided</span>
+//                                 )}
+//                             </td>
+//                             <td className="py-3 px-4">
+//                                 <div className="text-sm text-gray-600 max-w-32 truncate" title={reader.address || "No address"}>
+//                                     {reader.address || <span className="text-gray-400">Not provided</span>}
+//                                 </div>
+//                             </td>
+//                             <td className="py-3 px-4">
+//                                 {reader.dateOfBirth?.slice(0, 10) ? (
+//                                     <span className="text-sm text-gray-900">
+//                                         {reader.dateOfBirth.slice(0, 10)}
+//                                     </span>
+//                                 ) : (
+//                                     <span className="text-sm text-gray-400">Not set</span>
+//                                 )}
+//                             </td>
+//                             <td className="py-3 px-4">
+//                                 <span className="text-sm font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded">
+//                                     {reader.nic}
+//                                 </span>
+//                             </td>
+//                             <td className="py-3 px-4">
+//                                 <div className="flex items-center justify-center space-x-2">
+//                                     <button
+//                                         onClick={() => onEdit(reader)}
+//                                         className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+//                                         title="Edit reader"
+//                                     >
+//                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+//                                         </svg>
+//                                     </button>
+//                                     <button
+//                                         onClick={() => onDelete(reader._id)}
+//                                         className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
+//                                         title="Delete reader"
+//                                     >
+//                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+//                                         </svg>
+//                                     </button>
+//                                 </div>
+//                             </td>
+//                         </tr>
+//                     ))}
+//                     </tbody>
+//                 </table>
+//
+//                 {/* Clean Empty State */}
+//                 {readers.length === 0 && (
+//                     <div className="text-center py-12">
+//                         <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+//                             <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+//                             </svg>
+//                         </div>
+//                         <h3 className="text-lg font-medium text-gray-900 mb-2">No readers found</h3>
+//                         <p className="text-gray-500">Start by adding your first library member.</p>
+//                     </div>
+//                 )}
+//             </div>
+//         </div>
+//     );
+// };
+//
+// export default ReaderTable;
+
+
+// ReaderTable.tsx
 import React from "react";
-import type {Reader} from "../pages/ManageReaderPage.tsx";
+import Swal from "sweetalert2";
+import type { Reader } from "../pages/ManageReaderPage.tsx";
 
 interface TableProps {
     readers: Reader[];
@@ -230,111 +375,80 @@ interface TableProps {
 }
 
 const ReaderTable: React.FC<TableProps> = ({ readers, onEdit, onDelete }) => {
+    const handleDeleteClick = async (id: string) => {
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc2626",
+            cancelButtonColor: "#6b7280",
+            confirmButtonText: "Yes, delete it!"
+        });
+
+        if (result.isConfirmed) {
+            onDelete(id);
+        }
+    };
+
     return (
         <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
             <div className="overflow-x-auto">
-                <table className="min-w-full">
-                    <thead>
-                    <tr className="bg-gray-50 border-b border-gray-200">
-                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                    <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Member ID
                         </th>
-                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Name
                         </th>
-                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Email
                         </th>
-                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Phone
                         </th>
-                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
-                            Address
-                        </th>
-                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
-                            Date of Birth
-                        </th>
-                        <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
-                            NIC
-                        </th>
-                        <th className="py-3 px-4 text-center text-sm font-medium text-gray-600">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Actions
                         </th>
                     </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
-                    {readers.map((reader, index) => (
-                        <tr
-                            key={reader._id}
-                            className="hover:bg-gray-50 transition-colors"
-                        >
-                            <td className="py-3 px-4">
-                                <div className="flex items-center space-x-3">
-                                    <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
-                                        {reader.memberId?.slice(-2) || '##'}
+                    <tbody className="bg-white divide-y divide-gray-200">
+                    {readers.map((reader) => (
+                        <tr key={reader._id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                    <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <span className="text-blue-800 font-medium">{reader.memberId?.slice(-2) || '##'}</span>
                                     </div>
-                                    <span className="text-sm font-medium text-gray-900">
-                                        {reader.memberId}
-                                    </span>
+                                    <div className="ml-4">
+                                        <div className="text-sm font-medium text-gray-900">{reader.memberId || 'N/A'}</div>
+                                    </div>
                                 </div>
                             </td>
-                            <td className="py-3 px-4">
-                                <span className="text-sm font-medium text-gray-900">
-                                    {reader.name}
-                                </span>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm font-medium text-gray-900">{reader.name}</div>
                             </td>
-                            <td className="py-3 px-4">
-                                <span className="text-sm text-gray-600">
-                                    {reader.email}
-                                </span>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-gray-900">{reader.email}</div>
                             </td>
-                            <td className="py-3 px-4">
-                                {reader.phone ? (
-                                    <span className="text-sm text-gray-900">
-                                        {reader.phone}
-                                    </span>
-                                ) : (
-                                    <span className="text-sm text-gray-400">Not provided</span>
-                                )}
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-gray-900">{reader.phone || 'N/A'}</div>
                             </td>
-                            <td className="py-3 px-4">
-                                <div className="text-sm text-gray-600 max-w-32 truncate" title={reader.address || "No address"}>
-                                    {reader.address || <span className="text-gray-400">Not provided</span>}
-                                </div>
-                            </td>
-                            <td className="py-3 px-4">
-                                {reader.dateOfBirth?.slice(0, 10) ? (
-                                    <span className="text-sm text-gray-900">
-                                        {reader.dateOfBirth.slice(0, 10)}
-                                    </span>
-                                ) : (
-                                    <span className="text-sm text-gray-400">Not set</span>
-                                )}
-                            </td>
-                            <td className="py-3 px-4">
-                                <span className="text-sm font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded">
-                                    {reader.nic}
-                                </span>
-                            </td>
-                            <td className="py-3 px-4">
-                                <div className="flex items-center justify-center space-x-2">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div className="flex space-x-2">
                                     <button
                                         onClick={() => onEdit(reader)}
-                                        className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                                        title="Edit reader"
+                                        className="text-indigo-600 hover:text-indigo-900"
                                     >
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
+                                        Edit
                                     </button>
                                     <button
-                                        onClick={() => onDelete(reader._id)}
-                                        className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
-                                        title="Delete reader"
+                                        onClick={() => handleDeleteClick(reader._id)}
+                                        className="text-red-600 hover:text-red-900"
                                     >
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
+                                        Delete
                                     </button>
                                 </div>
                             </td>
@@ -343,7 +457,6 @@ const ReaderTable: React.FC<TableProps> = ({ readers, onEdit, onDelete }) => {
                     </tbody>
                 </table>
 
-                {/* Clean Empty State */}
                 {readers.length === 0 && (
                     <div className="text-center py-12">
                         <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">

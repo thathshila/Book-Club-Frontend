@@ -1,9 +1,9 @@
 //
-//
 // import { useEffect, useState } from "react";
 // import { getAllBooks, deleteBook, updateBook, getFilteredBooks } from "../services/bookService.ts";
 // import toast from "react-hot-toast";
 // import type { Book } from "../types/Book.ts";
+// import LendBookForm from "../components/LendingForm"; // Import your LendBookForm component
 // import {
 //     FiSearch,
 //     FiEdit,
@@ -17,14 +17,21 @@
 //     FiFileText,
 //     FiPlusCircle,
 //     FiMinusCircle,
-//     FiClock
+//     FiClock,
+//     FiUserPlus
 // } from "react-icons/fi";
 //
-// const BookList = ({ refreshFlag }: { refreshFlag: boolean }) => {
+// interface BookListProps {
+//     refreshFlag: boolean;
+// }
+//
+// const BookList = ({ refreshFlag }: BookListProps) => {
 //     const [books, setBooks] = useState<Book[]>([]);
 //     const [loading, setLoading] = useState(false);
 //     const [editBook, setEditBook] = useState<Book | null>(null);
 //     const [editLoading, setEditLoading] = useState(false);
+//     const [showLendForm, setShowLendForm] = useState(false);
+//     const [selectedBookIsbn, setSelectedBookIsbn] = useState("");
 //
 //     const [searchParams, setSearchParams] = useState({
 //         title: "",
@@ -105,6 +112,19 @@
 //             isbn: ""
 //         });
 //         fetchBooks();
+//     };
+//
+//     const handleLendBook = (book: Book) => {
+//         if (!book.isbn) {
+//             toast.error("This book doesn't have an ISBN");
+//             return;
+//         }
+//         if (book.copiesAvailable <= 0) {
+//             toast.error("No copies available for lending");
+//             return;
+//         }
+//         setSelectedBookIsbn(book.isbn);
+//         setShowLendForm(true);
 //     };
 //
 //     if (loading) return (
@@ -205,6 +225,24 @@
 //                                         </div>
 //                                         <div className="flex space-x-2">
 //                                             <button
+//                                                 onClick={() => handleLendBook(book)}
+//                                                 disabled={!book.isbn || book.copiesAvailable <= 0}
+//                                                 className={`p-2 rounded-full transition-colors ${
+//                                                     !book.isbn || book.copiesAvailable <= 0
+//                                                         ? "text-gray-400 cursor-not-allowed"
+//                                                         : "text-green-600 hover:text-green-800 hover:bg-green-50"
+//                                                 }`}
+//                                                 title={
+//                                                     !book.isbn
+//                                                         ? "No ISBN available"
+//                                                         : book.copiesAvailable <= 0
+//                                                             ? "No copies available"
+//                                                             : "Lend this book"
+//                                                 }
+//                                             >
+//                                                 <FiUserPlus />
+//                                             </button>
+//                                             <button
 //                                                 onClick={() => setEditBook(book)}
 //                                                 className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
 //                                                 title="Edit book"
@@ -259,7 +297,11 @@
 //                                             )}
 //                                             <div>
 //                                                 <p className="text-sm text-gray-500">Copies Available</p>
-//                                                 <p className="font-medium">{book.copiesAvailable}</p>
+//                                                 <p className={`font-medium ${
+//                                                     book.copiesAvailable > 0 ? "text-green-600" : "text-red-600"
+//                                                 }`}>
+//                                                     {book.copiesAvailable}
+//                                                 </p>
 //                                             </div>
 //                                         </div>
 //                                         {book.createdAt && (
@@ -389,17 +431,33 @@
 //                     </form>
 //                 </div>
 //             )}
+//
+//             {/* Lend Book Modal */}
+//             {showLendForm && (
+//                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+//                     <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+//                         <LendBookForm
+//                             onLend={() => {
+//                                 setShowLendForm(false);
+//                                 fetchBooks(); // Refresh the book list
+//                             }}
+//                             prefilledIsbn={selectedBookIsbn}
+//                             onClose={() => setShowLendForm(false)}
+//                         />
+//                     </div>
+//                 </div>
+//             )}
 //         </div>
 //     );
 // };
 //
 // export default BookList;
-
+//
 import { useEffect, useState } from "react";
 import { getAllBooks, deleteBook, updateBook, getFilteredBooks } from "../services/bookService.ts";
-import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 import type { Book } from "../types/Book.ts";
-import LendBookForm from "../components/LendingForm"; // Import your LendBookForm component
+import LendBookForm from "../components/LendingForm";
 import {
     FiSearch,
     FiEdit,
@@ -428,7 +486,6 @@ const BookList = ({ refreshFlag }: BookListProps) => {
     const [editLoading, setEditLoading] = useState(false);
     const [showLendForm, setShowLendForm] = useState(false);
     const [selectedBookIsbn, setSelectedBookIsbn] = useState("");
-
     const [searchParams, setSearchParams] = useState({
         title: "",
         author: "",
@@ -442,7 +499,12 @@ const BookList = ({ refreshFlag }: BookListProps) => {
             const data = await getAllBooks();
             setBooks(data);
         } catch {
-            toast.error("Failed to fetch books");
+            Swal.fire({
+                title: 'Error',
+                text: 'Failed to fetch books',
+                icon: 'error',
+                confirmButtonColor: '#4f46e5'
+            });
         } finally {
             setLoading(false);
         }
@@ -453,13 +515,34 @@ const BookList = ({ refreshFlag }: BookListProps) => {
     }, [refreshFlag]);
 
     const handleDelete = async (id: string) => {
-        if (!confirm("Are you sure you want to delete this book?")) return;
-        try {
-            await deleteBook(id);
-            toast.success("Book deleted successfully");
-            fetchBooks();
-        } catch {
-            toast.error("Failed to delete book");
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4f46e5',
+            cancelButtonColor: '#ef4444',
+            confirmButtonText: 'Yes, delete it!'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await deleteBook(id);
+                await Swal.fire({
+                    title: 'Deleted!',
+                    text: 'The book has been deleted.',
+                    icon: 'success',
+                    confirmButtonColor: '#4f46e5'
+                });
+                fetchBooks();
+            } catch {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to delete book',
+                    icon: 'error',
+                    confirmButtonColor: '#4f46e5'
+                });
+            }
         }
     };
 
@@ -478,11 +561,21 @@ const BookList = ({ refreshFlag }: BookListProps) => {
             data.append("copiesAvailable", String(editBook.copiesAvailable));
 
             await updateBook(editBook._id!, data);
-            toast.success("Book updated successfully");
+            await Swal.fire({
+                title: 'Success!',
+                text: 'Book updated successfully',
+                icon: 'success',
+                confirmButtonColor: '#4f46e5'
+            });
             setEditBook(null);
             fetchBooks();
         } catch {
-            toast.error("Failed to update book");
+            await Swal.fire({
+                title: 'Error',
+                text: 'Failed to update book',
+                icon: 'error',
+                confirmButtonColor: '#4f46e5'
+            });
         } finally {
             setEditLoading(false);
         }
@@ -494,7 +587,12 @@ const BookList = ({ refreshFlag }: BookListProps) => {
             const filtered = await getFilteredBooks(searchParams);
             setBooks(filtered);
         } catch {
-            toast.error("Failed to search books");
+            await Swal.fire({
+                title: 'Error',
+                text: 'Failed to search books',
+                icon: 'error',
+                confirmButtonColor: '#4f46e5'
+            });
         } finally {
             setLoading(false);
         }
@@ -512,11 +610,21 @@ const BookList = ({ refreshFlag }: BookListProps) => {
 
     const handleLendBook = (book: Book) => {
         if (!book.isbn) {
-            toast.error("This book doesn't have an ISBN");
+            Swal.fire({
+                title: 'Cannot Lend',
+                text: "This book doesn't have an ISBN",
+                icon: 'error',
+                confirmButtonColor: '#4f46e5'
+            });
             return;
         }
         if (book.copiesAvailable <= 0) {
-            toast.error("No copies available for lending");
+            Swal.fire({
+                title: 'No Copies Available',
+                text: 'There are no copies available for lending',
+                icon: 'warning',
+                confirmButtonColor: '#4f46e5'
+            });
             return;
         }
         setSelectedBookIsbn(book.isbn);
@@ -531,22 +639,21 @@ const BookList = ({ refreshFlag }: BookListProps) => {
     );
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-8">
-            <div className="flex items-center justify-between mb-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <h2 className="text-2xl font-bold text-gray-800 flex items-center">
                     <FiBook className="mr-2" /> Book Catalog
                 </h2>
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
                     {books.length} {books.length === 1 ? 'book' : 'books'} found
                 </div>
             </div>
 
-            {/* Search Filters */}
-            <div className="bg-white p-5 rounded-lg shadow-md mb-8">
+            <div className="bg-white p-4 sm:p-5 rounded-lg shadow-md mb-8">
                 <h3 className="text-lg font-semibold mb-4 flex items-center">
                     <FiSearch className="mr-2" /> Search Books
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     {[
                         { field: "title", icon: <FiBook className="text-gray-400" />, placeholder: "Book title" },
                         { field: "author", icon: <FiUser className="text-gray-400" />, placeholder: "Author name" },
@@ -572,16 +679,16 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                         </div>
                     ))}
                 </div>
-                <div className="flex justify-end space-x-3">
+                <div className="flex flex-col sm:flex-row justify-end gap-3">
                     <button
                         onClick={resetSearch}
-                        className="px-4 py-2 border border-gray-300 rounded-lg flex items-center hover:bg-gray-50"
+                        className="px-4 py-2 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
                     >
                         <FiX className="mr-2" /> Reset
                     </button>
                     <button
                         onClick={handleSearch}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center hover:bg-blue-700 transition-colors"
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
                     >
                         <FiSearch className="mr-2" /> Search
                     </button>
@@ -595,26 +702,23 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                     <p className="text-gray-500 mt-2">Try adjusting your search criteria</p>
                 </div>
             ) : (
-                <div className="grid gap-6">
+                <div className="grid gap-4 sm:gap-6">
                     {books.map((book) => (
-                        <div
-                            key={book._id}
-                            className="border rounded-lg p-5 bg-white shadow-sm hover:shadow-md transition-shadow"
-                        >
-                            <div className="flex flex-col md:flex-row gap-6">
+                        <div key={book._id} className="border rounded-lg p-4 sm:p-5 bg-white shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
                                 {book.profileImage && (
-                                    <div className="w-full md:w-50 flex-shrink-0">
+                                    <div className="w-full md:w-40 lg:w-48 flex-shrink-0">
                                         <img
                                             src={book.profileImage}
                                             alt={book.title}
-                                            className="h-55 w-full object-cover rounded-lg border"
+                                            className="h-48 sm:h-56 w-full object-cover rounded-lg border"
                                         />
                                     </div>
                                 )}
                                 <div className="flex-grow">
-                                    <div className="flex justify-between items-start">
+                                    <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4">
                                         <div>
-                                            <h3 className="text-xl font-bold text-gray-800">{book.title}</h3>
+                                            <h3 className="text-lg sm:text-xl font-bold text-gray-800">{book.title}</h3>
                                             <p className="text-gray-600 flex items-center mt-1">
                                                 <FiUser className="mr-2" /> {book.author}
                                             </p>
@@ -636,41 +740,41 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                                                             : "Lend this book"
                                                 }
                                             >
-                                                <FiUserPlus />
+                                                <FiUserPlus size={18} />
                                             </button>
                                             <button
                                                 onClick={() => setEditBook(book)}
-                                                className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
+                                                className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full transition-colors"
                                                 title="Edit book"
                                             >
-                                                <FiEdit />
+                                                <FiEdit size={18} />
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(book._id!)}
-                                                className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
+                                                className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full transition-colors"
                                                 title="Delete book"
                                             >
-                                                <FiTrash2 />
+                                                <FiTrash2 size={18} />
                                             </button>
                                         </div>
                                     </div>
 
-                                    <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                         {book.isbn && (
                                             <div className="flex items-start">
-                                                <FiFileText className="mt-1 mr-2 text-gray-400 flex-shrink-0" />
+                                                <FiFileText className="mt-0.5 mr-2 text-gray-400 flex-shrink-0" />
                                                 <div>
-                                                    <p className="text-sm text-gray-500">ISBN</p>
-                                                    <p className="font-medium">{book.isbn}</p>
+                                                    <p className="text-xs sm:text-sm text-gray-500">ISBN</p>
+                                                    <p className="text-sm sm:text-base font-medium">{book.isbn}</p>
                                                 </div>
                                             </div>
                                         )}
                                         {book.publishedDate && (
                                             <div className="flex items-start">
-                                                <FiCalendar className="mt-1 mr-2 text-gray-400 flex-shrink-0" />
+                                                <FiCalendar className="mt-0.5 mr-2 text-gray-400 flex-shrink-0" />
                                                 <div>
-                                                    <p className="text-sm text-gray-500">Published Date</p>
-                                                    <p className="font-medium">
+                                                    <p className="text-xs sm:text-sm text-gray-500">Published Date</p>
+                                                    <p className="text-sm sm:text-base font-medium">
                                                         {new Date(book.publishedDate).toLocaleDateString()}
                                                     </p>
                                                 </div>
@@ -678,22 +782,22 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                                         )}
                                         {book.genre && (
                                             <div className="flex items-start">
-                                                <FiTag className="mt-1 mr-2 text-gray-400 flex-shrink-0" />
+                                                <FiTag className="mt-0.5 mr-2 text-gray-400 flex-shrink-0" />
                                                 <div>
-                                                    <p className="text-sm text-gray-500">Genre</p>
-                                                    <p className="font-medium">{book.genre}</p>
+                                                    <p className="text-xs sm:text-sm text-gray-500">Genre</p>
+                                                    <p className="text-sm sm:text-base font-medium">{book.genre}</p>
                                                 </div>
                                             </div>
                                         )}
                                         <div className="flex items-start">
                                             {book.copiesAvailable > 0 ? (
-                                                <FiPlusCircle className="mt-1 mr-2 text-green-500 flex-shrink-0" />
+                                                <FiPlusCircle className="mt-0.5 mr-2 text-green-500 flex-shrink-0" />
                                             ) : (
-                                                <FiMinusCircle className="mt-1 mr-2 text-red-500 flex-shrink-0" />
+                                                <FiMinusCircle className="mt-0.5 mr-2 text-red-500 flex-shrink-0" />
                                             )}
                                             <div>
-                                                <p className="text-sm text-gray-500">Copies Available</p>
-                                                <p className={`font-medium ${
+                                                <p className="text-xs sm:text-sm text-gray-500">Copies Available</p>
+                                                <p className={`text-sm sm:text-base font-medium ${
                                                     book.copiesAvailable > 0 ? "text-green-600" : "text-red-600"
                                                 }`}>
                                                     {book.copiesAvailable}
@@ -702,10 +806,10 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                                         </div>
                                         {book.createdAt && (
                                             <div className="flex items-start">
-                                                <FiClock className="mt-1 mr-2 text-gray-400 flex-shrink-0" />
+                                                <FiClock className="mt-0.5 mr-2 text-gray-400 flex-shrink-0" />
                                                 <div>
-                                                    <p className="text-sm text-gray-500">Added On</p>
-                                                    <p className="font-medium">
+                                                    <p className="text-xs sm:text-sm text-gray-500">Added On</p>
+                                                    <p className="text-sm sm:text-base font-medium">
                                                         {new Date(book.createdAt).toLocaleDateString()}
                                                     </p>
                                                 </div>
@@ -714,11 +818,11 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                                     </div>
 
                                     {book.description && (
-                                        <div className="mt-4">
-                                            <p className="text-sm text-gray-500 flex items-center">
+                                        <div className="mt-3 sm:mt-4">
+                                            <p className="text-xs sm:text-sm text-gray-500 flex items-center">
                                                 <FiFileText className="mr-2" /> Description
                                             </p>
-                                            <p className="mt-1 text-gray-700">{book.description}</p>
+                                            <p className="mt-1 text-sm sm:text-base text-gray-700 line-clamp-3">{book.description}</p>
                                         </div>
                                     )}
                                 </div>
@@ -728,12 +832,11 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                 </div>
             )}
 
-            {/* Update Modal */}
             {editBook && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <form
                         onSubmit={handleUpdate}
-                        className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full"
+                        className="bg-white p-4 sm:p-6 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                     >
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-xl font-bold text-gray-800 flex items-center">
@@ -742,7 +845,7 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                             <button
                                 type="button"
                                 onClick={() => setEditBook(null)}
-                                className="text-gray-500 hover:text-gray-700"
+                                className="text-gray-500 hover:text-gray-700 transition-colors"
                             >
                                 <FiX size={24} />
                             </button>
@@ -796,18 +899,18 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                             />
                         </div>
 
-                        <div className="flex justify-end space-x-3">
+                        <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3">
                             <button
                                 type="button"
                                 onClick={() => setEditBook(null)}
-                                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 flex items-center"
+                                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-colors"
                             >
                                 <FiX className="mr-2" /> Cancel
                             </button>
                             <button
                                 type="submit"
                                 disabled={editLoading}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center disabled:opacity-70"
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center justify-center disabled:opacity-70 transition-colors"
                             >
                                 {editLoading ? (
                                     <>
@@ -828,14 +931,19 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                 </div>
             )}
 
-            {/* Lend Book Modal */}
             {showLendForm && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
                         <LendBookForm
                             onLend={() => {
                                 setShowLendForm(false);
-                                fetchBooks(); // Refresh the book list
+                                fetchBooks();
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Book has been lent successfully',
+                                    icon: 'success',
+                                    confirmButtonColor: '#4f46e5'
+                                });
                             }}
                             prefilledIsbn={selectedBookIsbn}
                             onClose={() => setShowLendForm(false)}

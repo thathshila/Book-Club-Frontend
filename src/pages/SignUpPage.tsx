@@ -186,9 +186,7 @@ const Signup = () => {
                                 errors.role ? "border-red-500" : "border-gray-300"
                             } rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                         >
-                            <option value="">-- Select Role --</option>
                             <option value="staff">Staff Member</option>
-                            <option value="librarian">Librarian</option>
                         </select>
                         {errors.role && (
                             <p className="text-sm text-red-600 mt-1">{errors.role}</p>
