@@ -15,12 +15,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null) // Add user state
     const [isAuthenticating, setIsAuthenticating] = useState<boolean>(true)
 
-    // Function to fetch user data
     const fetchUserData = async (token: string) => {
         try {
-            // Set the token header first
             setHeader(token)
-            // Then fetch user data
             const userData = await getLoggedInUser()
             setUser(userData)
             return userData
@@ -35,10 +32,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setAccessToken(token)
         setIsLoggedIn(true)
 
-        // Fetch user data after login
         const userData = await fetchUserData(token)
 
-        // Navigate based on user role or default to dashboard
         if (userData) {
             router.navigate("/dashboard")
         }
@@ -47,8 +42,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const logout = () => {
         setIsLoggedIn(false)
         setAccessToken("")
-        setUser(null) // Clear user data
-        setHeader("") // Clear auth header
+        setUser(null)
+        setHeader("")
         router.navigate("/login")
     }
 
@@ -65,7 +60,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 setAccessToken(token)
                 setIsLoggedIn(true)
 
-                // Fetch user data after token refresh
                 await fetchUserData(token)
 
                 const currentPath = window.location.pathname

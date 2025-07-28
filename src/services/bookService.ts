@@ -17,12 +17,6 @@ export const addBook = async (formData: FormData) => {
     return res.data
 }
 
-
-// export const updateBook = async (id: string, bookData: Partial<Book>) => {
-//     const res = await apiClient.put(`/books/${id}`, bookData)
-//     return res.data
-// }
-
 export const updateBook = async (id: string, data: FormData) => {
     const response = await apiClient.put(`/books/${id}`, data, {
         headers: { "Content-Type": "multipart/form-data" },

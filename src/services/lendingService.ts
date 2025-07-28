@@ -2,8 +2,6 @@
 import apiClient from "./apiClient";
 import type { Lending } from "../types/Lending";
 
-
-// Lend a book
 export const lendBook = async (payload: {
     memberId: string;
     isbn: string;
@@ -13,16 +11,14 @@ export const lendBook = async (payload: {
     return res.data.lending;
 };
 
-
-// Get all lendings (with optional filters)
 export const getLendings = async (
     params?: { bookId?: string; readerId?: string }
 ): Promise<Lending[]> => {
     const res = await apiClient.get("/lendings", { params });
-    return res.data; // backend returns array directly
+    return res.data;
 };
 
-// Return a book
+
 export const returnBook = async (id: string): Promise<Lending> => {
     const res = await apiClient.put(`/lendings/${id}/return`);
     return res.data.lending;
@@ -34,14 +30,11 @@ export const sendOverdueNotifications = async () => {
     return response.data;
 };
 
-
-// ✅ Get all overdue lendings
 export const getOverdueLendings = async () => {
     const res = await apiClient.get("/lendings/overdue");
     return res.data;
 };
 
-// ✅ Get overdue payments
 export const getOverduePayments = async () => {
     const res = await apiClient.get("/lendings/overdue-payments");
     return res.data;
