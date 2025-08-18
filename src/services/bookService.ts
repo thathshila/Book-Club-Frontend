@@ -7,7 +7,6 @@ export const getAllBooks = async (): Promise<Book[]> => {
     return res.data
 }
 
-
 export const addBook = async (formData: FormData) => {
     const res = await apiClient.post("/books", formData, {
         headers: {

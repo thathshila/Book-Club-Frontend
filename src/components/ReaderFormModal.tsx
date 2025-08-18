@@ -157,7 +157,6 @@ const ReaderFormModal: React.FC<Props> = ({ onClose, existingReader, isEdit }) =
                                 setEmail(e.target.value);
                                 setErrors(prev => ({ ...prev, email: "" }));
                             }}
-                            disabled={isEdit}
                         />
                         {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
                     </div>

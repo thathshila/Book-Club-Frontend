@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { getAllBooks, deleteBook, updateBook, getFilteredBooks } from "../services/bookService.ts";
 import Swal from "sweetalert2";
@@ -17,7 +18,8 @@ import {
     FiPlusCircle,
     FiMinusCircle,
     FiClock,
-    FiUserPlus
+    FiUserPlus,
+    FiImage
 } from "react-icons/fi";
 
 interface BookListProps {
@@ -31,6 +33,8 @@ const BookList = ({ refreshFlag }: BookListProps) => {
     const [editLoading, setEditLoading] = useState(false);
     const [showLendForm, setShowLendForm] = useState(false);
     const [selectedBookIsbn, setSelectedBookIsbn] = useState("");
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [searchParams, setSearchParams] = useState({
         title: "",
         author: "",
@@ -105,6 +109,11 @@ const BookList = ({ refreshFlag }: BookListProps) => {
             data.append("description", editBook.description ?? "");
             data.append("copiesAvailable", String(editBook.copiesAvailable));
 
+            // Add image file if a new one was selected
+            if (imageFile) {
+                data.append("profileImage", imageFile);
+            }
+
             await updateBook(editBook._id!, data);
             await Swal.fire({
                 title: 'Success!',
@@ -112,6 +121,10 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                 icon: 'success',
                 confirmButtonColor: '#4f46e5'
             });
+
+            // Clear image state
+            setImageFile(null);
+            setImagePreview(null);
             setEditBook(null);
             fetchBooks();
         } catch {
@@ -124,6 +137,56 @@ const BookList = ({ refreshFlag }: BookListProps) => {
         } finally {
             setEditLoading(false);
         }
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                Swal.fire({
+                    title: 'Invalid File',
+                    text: 'Please select a valid image file',
+                    icon: 'error',
+                    confirmButtonColor: '#4f46e5'
+                });
+                return;
+            }
+
+            // Validate file size (e.g., max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                Swal.fire({
+                    title: 'File Too Large',
+                    text: 'Please select an image smaller than 5MB',
+                    icon: 'error',
+                    confirmButtonColor: '#4f46e5'
+                });
+                return;
+            }
+
+            setImageFile(file);
+
+            // Create preview URL
+            const previewUrl = URL.createObjectURL(file);
+            setImagePreview(previewUrl);
+        }
+    };
+
+    const removeImage = () => {
+        setImageFile(null);
+        setImagePreview(null);
+
+        // Clear the file input
+        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+        if (fileInput) {
+            fileInput.value = '';
+        }
+    };
+
+    const handleEditBookClick = (book: Book) => {
+        setEditBook(book);
+        setImageFile(null);
+        setImagePreview(null);
     };
 
     const handleSearch = async () => {
@@ -288,7 +351,7 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                                                 <FiUserPlus size={18} />
                                             </button>
                                             <button
-                                                onClick={() => setEditBook(book)}
+                                                onClick={() => handleEditBookClick(book)}
                                                 className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full transition-colors"
                                                 title="Edit book"
                                             >
@@ -389,11 +452,85 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                             </h2>
                             <button
                                 type="button"
-                                onClick={() => setEditBook(null)}
+                                onClick={() => {
+                                    setEditBook(null);
+                                    setImageFile(null);
+                                    setImagePreview(null);
+                                }}
                                 className="text-gray-500 hover:text-gray-700 transition-colors"
                             >
                                 <FiX size={24} />
                             </button>
+                        </div>
+
+                        {/* Image Upload Section */}
+                        <div className="space-y-3 mb-6">
+                            <label className="block text-sm font-medium text-gray-700 flex items-center">
+                                <FiImage className="mr-2" />
+                                Profile Image
+                            </label>
+
+                            {/* Current Image Preview */}
+                            <div className="flex flex-col sm:flex-row gap-4 items-start">
+                                <div className="flex flex-col">
+                                    <p className="text-xs text-gray-500 mb-2">Current Image:</p>
+                                    {editBook.profileImage ? (
+                                        <img
+                                            src={editBook.profileImage}
+                                            alt="Current"
+                                            className="h-24 w-24 object-cover rounded-md border"
+                                        />
+                                    ) : (
+                                        <div className="h-24 w-24 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center">
+                                            <FiImage className="text-gray-400" size={20} />
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* New Image Preview */}
+                                {imagePreview && (
+                                    <div className="flex flex-col">
+                                        <p className="text-xs text-gray-500 mb-2">New Image:</p>
+                                        <div className="relative">
+                                            <img
+                                                src={imagePreview}
+                                                alt="Preview"
+                                                className="h-24 w-24 object-cover rounded-md border"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={removeImage}
+                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                                                title="Remove image"
+                                            >
+                                                <FiX size={12} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* File Input */}
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    className="flex-1 border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500"
+                                />
+                                {(imageFile || imagePreview) && (
+                                    <button
+                                        type="button"
+                                        onClick={removeImage}
+                                        className="px-3 py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-200 transition-colors text-sm"
+                                    >
+                                        Clear
+                                    </button>
+                                )}
+                            </div>
+                            <p className="text-xs text-gray-500">
+                                Supported formats: JPG, PNG, GIF. Max size: 5MB
+                            </p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -447,7 +584,11 @@ const BookList = ({ refreshFlag }: BookListProps) => {
                         <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3">
                             <button
                                 type="button"
-                                onClick={() => setEditBook(null)}
+                                onClick={() => {
+                                    setEditBook(null);
+                                    setImageFile(null);
+                                    setImagePreview(null);
+                                }}
                                 className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-colors"
                             >
                                 <FiX className="mr-2" /> Cancel

@@ -77,15 +77,6 @@ const Login = () => {
         setIsLoading(true);
         try {
             const user = await login(formData);
-            await MySwal.fire({
-                title: "Success!",
-                text: `Welcome back, ${user.name}!`,
-                icon: "success",
-                confirmButtonText: "Continue",
-                confirmButtonColor: "#6366f1",
-                timer: 2000,
-                timerProgressBar: true,
-            });
             authenticate(user.accessToken);
         } catch (error) {
             let errorMessage = "Something went wrong";

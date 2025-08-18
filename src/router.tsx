@@ -20,13 +20,13 @@ const router = createBrowserRouter([
         path: "/",
         element: <Layout />,
         children: [
-            { index: true, element: <Login /> }, // sets / to Login
+            { index: true, element: <Login /> },
             { path: "login", element: <Login /> },
             { path: "signup", element: <Signup /> },
             {
                 element: <AdminRoutes />,
                 children: [
-                    { index: true, element: <MainDashboard /> }, // dashboard default landing
+                    { index: true, element: <MainDashboard /> },
                     { path: "dashboard", element: <MainDashboard /> },
                     { path: "manage-books", element: <ManageBookPage /> },
                     { path: "dashboard/lendingList", element: <LendingList refreshFlag={false} /> },
